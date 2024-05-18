@@ -1,9 +1,9 @@
 import { component$ } from "@builder.io/qwik";
-import { routeLoader$, type DocumentHead } from "@builder.io/qwik-city";
+import { routeLoader$, type DocumentHead, Link, useNavigate } from "@builder.io/qwik-city";
 
 import { client } from "~/lib/client";
 
-type Content = {
+export type Article = {
   id: string;
   createdAt: string;
   updatedAt: string;
@@ -14,7 +14,7 @@ type Content = {
   category: string | null;
 }
 
-export const useArticlesLoader = routeLoader$<Content[]>(async () => {
+export const useArticlesLoader = routeLoader$<Article[]>(async () => {
   try {
     const response = await client.get({
       endpoint: 'blogs',
@@ -28,6 +28,7 @@ export const useArticlesLoader = routeLoader$<Content[]>(async () => {
 
 export default component$(() => {
   const articles = useArticlesLoader();
+  const navigate = useNavigate();
 
   return (
     <table class="w-full">
@@ -39,11 +40,12 @@ export default component$(() => {
       </thead>
       <tbody>
         {articles.value.map((article) => (
-          <tr key={article.title} class="cursor-pointer border-b last:border-b-0 hover:bg-gray-100">
+          <tr key={article.id} class="cursor-pointer border-b last:border-b-0 hover:bg-gray-100" onClick$={() => navigate(`/${article.id}`)}>
             <td class="py-3 text-gray-700">{new Date(article.createdAt).toLocaleDateString('ja-JP', { timeZone: 'Asia/Tokyo' })}</td>
             <td class="py-3 text-gray-700">{article.title}</td>
           </tr>
         ))}
+
       </tbody>
     </table>
 
