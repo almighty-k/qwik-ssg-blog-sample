@@ -3,6 +3,10 @@ import { extendConfig } from "@builder.io/qwik-city/vite";
 import baseConfig from "../../vite.config";
 
 export default extendConfig(baseConfig, () => {
+  if (!process.env.CLIENT_URL) {
+    throw new Error('CLIENT_URL is not set');
+  }
+
   return {
     build: {
       ssr: true,
@@ -12,7 +16,7 @@ export default extendConfig(baseConfig, () => {
     },
     plugins: [
       staticAdapter({
-        origin: "https://yoursite.qwik.dev",
+        origin: process.env.CLIENT_URL,
       }),
     ],
   };
