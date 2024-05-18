@@ -34,7 +34,7 @@ export default component$(() => {
 export const head: DocumentHead = ({ resolveValue }) => {
   const article = resolveValue(useArticleLoader);
   return {
-    title: article.title,
+    title: `- ${article.title}`,
     meta: [
       {
         name: 'description',
