@@ -24,7 +24,7 @@ export const useArticleLoader = routeLoader$(async ({ params }) => {
 export default component$(() => {
   const article = useArticleLoader();
   return (
-    <div class="prose">
+    <div class="prose mx-auto">
       <h1>{article.value.title}</h1>
       <div dangerouslySetInnerHTML={article.value.content} />
     </div>
